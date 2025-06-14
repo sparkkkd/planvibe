@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model User {
+  id String @id @default(uuid())
+
+  email    String @unique
+  password String
+  name     String
+  role     Role   @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  projects Project[] @relation("ProjectMembers")
+  tasks    Task[]    @relation("AssigneeTasks")
+  comments Comment[]
+
+  @@map("users")
+}
+
+model Project {
+  id String @id @default(uuid())
+
+  name        String
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  members User[] @relation("ProjectMembers")
+  tasks   Task[]
+
+  @@map("projects")
+}
+
+model Task {
+  id String @id @default(uuid())
+
+  title       String
+  description String?
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(LOW)
+  dueDate     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  assignee   User?   @relation("AssigneeTasks", fields: [assigneeId], references: [id])
+  assigneeId String?
+
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String
+
+  attachments Attachment[]
+  comments    Comment[]
+
+  @@map("tasks")
+}
+
+model Comment {
+  id String @id @default(uuid())
+
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  task   Task   @relation(fields: [taskId], references: [id])
+  taskId String
+
+  @@map("comments")
+}
+
+model Attachment {
+  id String @id @default(uuid())
+
+  url      String
+  filename String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  task   Task   @relation(fields: [taskId], references: [id])
+  taskId String
+
+  @@map("attachments")
+}
