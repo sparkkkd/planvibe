@@ -9,26 +9,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateUserDto = void 0;
+exports.RegisterDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class CreateUserDto {
+class RegisterDto {
     email;
     password;
     name;
 }
-exports.CreateUserDto = CreateUserDto;
+exports.RegisterDto = RegisterDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Почта пользователя',
+        example: 'johndoe@gmail.com',
+    }),
     (0, class_validator_1.IsEmail)({}, { message: 'Неверный формат почты' }),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "email", void 0);
+], RegisterDto.prototype, "email", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Пароль',
+        example: '123456',
+        minLength: 6,
+        maxLength: 40,
+    }),
     (0, class_validator_1.IsNotEmpty)({ message: 'Поле не может быть пустым' }),
     (0, class_validator_1.MinLength)(6, { message: 'Минимальная длина пароля 6 символов' }),
+    (0, class_validator_1.MaxLength)(40, { message: 'Максимальная длина пароля 40 символов' }),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "password", void 0);
+], RegisterDto.prototype, "password", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Имя пользователя',
+        example: 'John Doe',
+        minLength: 5,
+        maxLength: 40,
+    }),
     (0, class_validator_1.IsNotEmpty)({ message: 'Имя не может быть пустым' }),
     (0, class_validator_1.MaxLength)(40, { message: 'Максимальная длина имени 40 символов' }),
+    (0, class_validator_1.MinLength)(5, { message: 'Минимальная длина имени 5 символов' }),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "name", void 0);
-//# sourceMappingURL=create-user.dto.js.map
+], RegisterDto.prototype, "name", void 0);
+//# sourceMappingURL=register.dto.js.map

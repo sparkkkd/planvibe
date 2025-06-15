@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
-const bcrypt = require("bcrypt");
 const prisma_service_1 = require("../../prisma/prisma.service");
 let UsersService = class UsersService {
     prisma;
@@ -19,29 +18,25 @@ let UsersService = class UsersService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async createUser(dto) {
-        const { email, name, password } = dto;
-        const existing = await this.prisma.user.findUnique({
-            where: { email: dto.email },
-        });
-        if (existing)
-            throw new common_1.ConflictException('Пользователь уже зарегистрирован');
-        const hashedPassword = await bcrypt.hash(dto.password, this.SALT_ROUNDS);
-        const user = await this.prisma.user.create({
-            data: {
+    async findByEmail(email) {
+        const user = await this.prisma.user.findUnique({
+            where: {
                 email,
-                password: hashedPassword,
-                name,
-            },
-            select: {
-                id: true,
-                email: true,
-                name: true,
-                role: true,
-                createdAt: true,
             },
         });
         return user;
+    }
+    async updateUser(dto) {
+        const { id, name } = dto;
+        const user = await this.prisma.user.update({
+            where: {
+                id,
+            },
+            data: {
+                name,
+            },
+        });
+        return user.name;
     }
 };
 exports.UsersService = UsersService;
