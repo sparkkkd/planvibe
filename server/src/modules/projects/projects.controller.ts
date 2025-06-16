@@ -19,9 +19,11 @@ import {
 	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
+	ApiTags,
 } from '@nestjs/swagger'
 import { ProjectResponseDto } from './dto/project-response.dto'
 
+@ApiTags('Проекты')
 @Authorization()
 @Controller('projects')
 export class ProjectsController {

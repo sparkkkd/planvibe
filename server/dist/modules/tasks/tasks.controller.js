@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TasksController = void 0;
 const common_1 = require("@nestjs/common");
 const tasks_service_1 = require("./tasks.service");
-const project_member_guard_1 = require("./guards/project-member.guard");
+const project_member_guard_1 = require("../../common/guards/project-member.guard");
 const create_task_dto_1 = require("./dto/create-task.dto");
 const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
 const swagger_1 = require("@nestjs/swagger");
@@ -152,6 +152,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "updateStatus", null);
 exports.TasksController = TasksController = __decorate([
+    (0, swagger_1.ApiTags)('Задачи'),
     (0, authorization_decorator_1.Authorization)(),
     (0, common_1.Controller)('projects/:projectId/tasks'),
     __metadata("design:paramtypes", [tasks_service_1.TasksService])

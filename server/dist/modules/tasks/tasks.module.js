@@ -10,7 +10,7 @@ exports.TasksModule = void 0;
 const common_1 = require("@nestjs/common");
 const tasks_service_1 = require("./tasks.service");
 const tasks_controller_1 = require("./tasks.controller");
-const project_member_guard_1 = require("./guards/project-member.guard");
+const project_member_guard_1 = require("../../common/guards/project-member.guard");
 let TasksModule = class TasksModule {
 };
 exports.TasksModule = TasksModule;

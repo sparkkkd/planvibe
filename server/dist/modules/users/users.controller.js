@@ -40,6 +40,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "update", null);
 exports.UsersController = UsersController = __decorate([
+    (0, swagger_1.ApiTags)('Пользователи'),
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);

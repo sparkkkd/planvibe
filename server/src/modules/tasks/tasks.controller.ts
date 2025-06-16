@@ -10,7 +10,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { TasksService } from './tasks.service'
-import { ProjectMemberGuard } from './guards/project-member.guard'
+import { ProjectMemberGuard } from '../../common/guards/project-member.guard'
 import { CreateTaskDto } from './dto/create-task.dto'
 import { CurrentUser } from '../auth/decorators/current-user.decorator'
 import {
@@ -19,6 +19,7 @@ import {
 	ApiOkResponse,
 	ApiOperation,
 	ApiQuery,
+	ApiTags,
 } from '@nestjs/swagger'
 import { TaskResponseDto } from './dto/task-response.dto'
 import { Authorization } from '../auth/decorators/authorization.decorator'
@@ -26,6 +27,7 @@ import { UpdateTaskDto } from './dto/update-task.dto'
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto'
 import { TaskFilterDto } from './dto/task-filter.dto'
 
+@ApiTags('Задачи')
 @Authorization()
 @Controller('projects/:projectId/tasks')
 export class TasksController {

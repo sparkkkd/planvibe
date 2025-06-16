@@ -7,7 +7,6 @@ import {
 	Post,
 	Req,
 	Res,
-	UseGuards,
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { RegisterDto } from './dto/register.dto'
@@ -19,16 +18,17 @@ import {
 	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
+	ApiTags,
 	ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 import { AuthResponseDto } from './dto/auth.dto'
-import { JwtAuthGuard } from './guards/jwt-auth.guard'
 import { Authorization } from './decorators/authorization.decorator'
 import { CurrentUser } from './decorators/current-user.decorator'
 import { User } from 'generated/prisma'
 import { plainToInstance } from 'class-transformer'
 import { UserDto } from './dto/user.dto'
 
+@ApiTags('Авторизация')
 @Controller('auth')
 export class AuthController {
 	constructor(private readonly authService: AuthService) {}

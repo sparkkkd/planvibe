@@ -1,9 +1,10 @@
 import { Body, Controller, HttpCode, HttpStatus, Patch } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { ApiBadRequestResponse, ApiOkResponse } from '@nestjs/swagger'
+import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Authorization } from '../auth/decorators/authorization.decorator'
 
+@ApiTags('Пользователи')
 @Controller('users')
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}

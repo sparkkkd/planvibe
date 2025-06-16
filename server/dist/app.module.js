@@ -14,6 +14,8 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const config_1 = require("@nestjs/config");
 const projects_module_1 = require("./modules/projects/projects.module");
 const tasks_module_1 = require("./modules/tasks/tasks.module");
+const attachments_module_1 = require("./modules/attachments/attachments.module");
+const comments_module_1 = require("./modules/comments/comments.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -29,6 +31,8 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             projects_module_1.ProjectsModule,
             tasks_module_1.TasksModule,
+            attachments_module_1.AttachmentsModule,
+            comments_module_1.CommentsModule,
         ],
         controllers: [],
         providers: [],

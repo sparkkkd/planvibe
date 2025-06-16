@@ -116,6 +116,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ProjectsController.prototype, "deleteProject", null);
 exports.ProjectsController = ProjectsController = __decorate([
+    (0, swagger_1.ApiTags)('Проекты'),
     (0, authorization_decorator_1.Authorization)(),
     (0, common_1.Controller)('projects'),
     __metadata("design:paramtypes", [projects_service_1.ProjectsService])

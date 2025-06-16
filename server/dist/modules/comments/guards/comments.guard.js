@@ -9,32 +9,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProjectMemberGuard = void 0;
+exports.CommentsGuard = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../../prisma/prisma.service");
-let ProjectMemberGuard = class ProjectMemberGuard {
+let CommentsGuard = class CommentsGuard {
     prisma;
     constructor(prisma) {
         this.prisma = prisma;
     }
     async canActivate(context) {
-        const req = context.switchToHttp().getRequest();
-        const userId = req.user.id;
-        const projectId = req.params.projectId;
-        const isMember = await this.prisma.projectMember.findFirst({
-            where: {
-                projectId,
-                userId,
+        const request = context.switchToHttp().getRequest();
+        const user = request.user;
+        const commentId = request.params.id;
+        const comment = await this.prisma.comment.findUnique({
+            where: { id: commentId },
+            include: {
+                task: {
+                    include: {
+                        project: true,
+                    },
+                },
             },
         });
-        if (!isMember)
-            throw new common_1.ForbiddenException('Вы не являетесь участником проекта');
+        if (!comment)
+            throw new common_1.NotFoundException('Комментарий не найден');
+        const isCommentOwner = comment.authorId === user.id;
+        const isProjectOwner = comment.task.project.ownerId === user.id;
+        if (!isCommentOwner && !isProjectOwner)
+            throw new common_1.ForbiddenException('У вас нет прав для удаления этого комментария');
         return true;
     }
 };
-exports.ProjectMemberGuard = ProjectMemberGuard;
-exports.ProjectMemberGuard = ProjectMemberGuard = __decorate([
+exports.CommentsGuard = CommentsGuard;
+exports.CommentsGuard = CommentsGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], ProjectMemberGuard);
-//# sourceMappingURL=project-member.guard.js.map
+], CommentsGuard);
+//# sourceMappingURL=comments.guard.js.map
