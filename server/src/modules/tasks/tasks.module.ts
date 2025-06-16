@@ -4,6 +4,7 @@ import { TasksController } from './tasks.controller'
 import { ProjectMemberGuard } from '../../common/guards/project-member.guard'
 
 @Module({
+	imports: [],
 	controllers: [TasksController],
 	providers: [TasksService, ProjectMemberGuard],
 })

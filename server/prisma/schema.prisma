@@ -171,15 +171,19 @@ model Attachment {
 }
 
 model Activity {
-  id        String  @id @default(uuid())
+  id String @id @default(uuid())
+
+  entity   ActivityEntity
+  entityId String
+
+  action      ActivityAction
+  description String
+
   project   Project @relation(fields: [projectId], references: [id])
   projectId String
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
-
-  entity ActivityEntity
-  action ActivityAction
 
   createdAt DateTime @default(now())
 

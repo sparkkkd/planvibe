@@ -6,19 +6,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TasksModule = void 0;
+exports.ActivityModule = void 0;
 const common_1 = require("@nestjs/common");
-const tasks_service_1 = require("./tasks.service");
-const tasks_controller_1 = require("./tasks.controller");
-const project_member_guard_1 = require("../../common/guards/project-member.guard");
-let TasksModule = class TasksModule {
+const activity_service_1 = require("./activity.service");
+const activity_controller_1 = require("./activity.controller");
+let ActivityModule = class ActivityModule {
 };
-exports.TasksModule = TasksModule;
-exports.TasksModule = TasksModule = __decorate([
+exports.ActivityModule = ActivityModule;
+exports.ActivityModule = ActivityModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
-        controllers: [tasks_controller_1.TasksController],
-        providers: [tasks_service_1.TasksService, project_member_guard_1.ProjectMemberGuard],
+        controllers: [activity_controller_1.ActivityController],
+        providers: [activity_service_1.ActivityService],
     })
-], TasksModule);
-//# sourceMappingURL=tasks.module.js.map
+], ActivityModule);
+//# sourceMappingURL=activity.module.js.map

@@ -16,6 +16,8 @@ const projects_module_1 = require("./modules/projects/projects.module");
 const tasks_module_1 = require("./modules/tasks/tasks.module");
 const attachments_module_1 = require("./modules/attachments/attachments.module");
 const comments_module_1 = require("./modules/comments/comments.module");
+const activity_logger_module_1 = require("./modules/activity-logger/activity-logger.module");
+const activity_module_1 = require("./modules/activity/activity.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -33,6 +35,8 @@ exports.AppModule = AppModule = __decorate([
             tasks_module_1.TasksModule,
             attachments_module_1.AttachmentsModule,
             comments_module_1.CommentsModule,
+            activity_logger_module_1.ActivityLoggerModule,
+            activity_module_1.ActivityModule,
         ],
         controllers: [],
         providers: [],

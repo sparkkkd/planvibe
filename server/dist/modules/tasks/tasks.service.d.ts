@@ -4,9 +4,11 @@ import { TaskResponseDto } from './dto/task-response.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { TaskFilterDto } from './dto/task-filter.dto';
+import { ActivityLoggerService } from '../activity-logger/activity-logger.service';
 export declare class TasksService {
     private readonly prisma;
-    constructor(prisma: PrismaService);
+    private readonly activityLogger;
+    constructor(prisma: PrismaService, activityLogger: ActivityLoggerService);
     private buildWhereFilters;
     create(projectId: string, dto: CreateTaskDto, userId: string): Promise<TaskResponseDto>;
     getAllTasks(projectId: string, filter: TaskFilterDto): Promise<TaskResponseDto[]>;

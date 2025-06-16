@@ -15,8 +15,8 @@ const bcrypt = require("bcrypt");
 const prisma_service_1 = require("../../prisma/prisma.service");
 const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
-const is_dev_util_1 = require("../../utils/is-dev.util");
-const parse_time_util_1 = require("../../utils/parse-time.util");
+const is_dev_util_1 = require("../../common/utils/is-dev.util");
+const parse_time_util_1 = require("../../common/utils/parse-time.util");
 const token_service_1 = require("./token.service");
 let AuthService = class AuthService {
     prisma;

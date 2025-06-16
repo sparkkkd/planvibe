@@ -10,10 +10,16 @@ import { plainToInstance } from 'class-transformer'
 import { UpdateTaskDto } from './dto/update-task.dto'
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto'
 import { SortOrder, TaskFilterDto } from './dto/task-filter.dto'
+import { ActivityLoggerService } from '../activity-logger/activity-logger.service'
+import { ActivityAction, ActivityEntity } from 'generated/prisma'
+import { compareTaskChanges } from 'src/common/utils/compare-task-changes.util'
 
 @Injectable()
 export class TasksService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly activityLogger: ActivityLoggerService
+	) {}
 
 	private buildWhereFilters(filter: TaskFilterDto) {
 		const where: any = {}
@@ -82,6 +88,15 @@ export class TasksService {
 				projectId,
 				createdById: userId,
 			},
+		})
+
+		this.activityLogger.log({
+			userId,
+			projectId,
+			entity: ActivityEntity.TASK,
+			entityId: task.id,
+			action: ActivityAction.CREATE,
+			description: `Создана задача «${task.title}»`,
 		})
 
 		return plainToInstance(TaskResponseDto, task, {
@@ -165,6 +180,19 @@ export class TasksService {
 			},
 		})
 
+		const changes = compareTaskChanges(task, dto)
+
+		if (changes.length > 0) {
+			await this.activityLogger.log({
+				userId,
+				projectId,
+				entity: ActivityEntity.TASK,
+				entityId: taskId,
+				action: ActivityAction.UPDATE,
+				description: `Задача «${task.title}» обновлена. ${changes.join('. ')}`,
+			})
+		}
+
 		return plainToInstance(TaskResponseDto, updatedTask, {
 			excludeExtraneousValues: true,
 		})
@@ -195,6 +223,15 @@ export class TasksService {
 			this.prisma.task.delete({ where: { id: taskId } }),
 		])
 
+		await this.activityLogger.log({
+			userId,
+			projectId,
+			entity: ActivityEntity.TASK,
+			entityId: taskId,
+			action: ActivityAction.DELETE,
+			description: `Задача «${task.title}» удалена`,
+		})
+
 		return true
 	}
 
@@ -221,6 +258,15 @@ export class TasksService {
 		await this.prisma.task.update({
 			where: { id: taskId },
 			data: { status: dto.status },
+		})
+
+		await this.activityLogger.log({
+			userId,
+			projectId,
+			entity: ActivityEntity.TASK,
+			entityId: taskId,
+			action: ActivityAction.UPDATE,
+			description: `Статус задачи «${task.title}» изменен с ${task.status} на ${dto.status}`,
 		})
 
 		return true

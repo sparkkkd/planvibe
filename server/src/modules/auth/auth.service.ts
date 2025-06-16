@@ -12,8 +12,8 @@ import { JwtService } from '@nestjs/jwt'
 import { JwtPayload } from './strategies/jwt.strategy'
 import { LoginDto } from './dto/login.dto'
 import { Request, Response } from 'express'
-import { isDev } from 'src/utils/is-dev.util'
-import { parseTime } from 'src/utils/parse-time.util'
+import { isDev } from 'src/common/utils/is-dev.util'
+import { parseTime } from 'src/common/utils/parse-time.util'
 import { TokenService } from './token.service'
 
 @Injectable()

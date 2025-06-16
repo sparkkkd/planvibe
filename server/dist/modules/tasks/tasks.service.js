@@ -15,10 +15,15 @@ const prisma_service_1 = require("../../prisma/prisma.service");
 const task_response_dto_1 = require("./dto/task-response.dto");
 const class_transformer_1 = require("class-transformer");
 const task_filter_dto_1 = require("./dto/task-filter.dto");
+const activity_logger_service_1 = require("../activity-logger/activity-logger.service");
+const prisma_1 = require("../../../generated/prisma/index.js");
+const compare_task_changes_util_1 = require("../../common/utils/compare-task-changes.util");
 let TasksService = class TasksService {
     prisma;
-    constructor(prisma) {
+    activityLogger;
+    constructor(prisma, activityLogger) {
         this.prisma = prisma;
+        this.activityLogger = activityLogger;
     }
     buildWhereFilters(filter) {
         const where = {};
@@ -78,6 +83,14 @@ let TasksService = class TasksService {
                 createdById: userId,
             },
         });
+        this.activityLogger.log({
+            userId,
+            projectId,
+            entity: prisma_1.ActivityEntity.TASK,
+            entityId: task.id,
+            action: prisma_1.ActivityAction.CREATE,
+            description: `Создана задача «${task.title}»`,
+        });
         return (0, class_transformer_1.plainToInstance)(task_response_dto_1.TaskResponseDto, task, {
             excludeExtraneousValues: true,
         });
@@ -132,6 +145,17 @@ let TasksService = class TasksService {
                 ...dto,
             },
         });
+        const changes = (0, compare_task_changes_util_1.compareTaskChanges)(task, dto);
+        if (changes.length > 0) {
+            await this.activityLogger.log({
+                userId,
+                projectId,
+                entity: prisma_1.ActivityEntity.TASK,
+                entityId: taskId,
+                action: prisma_1.ActivityAction.UPDATE,
+                description: `Задача «${task.title}» обновлена. ${changes.join('. ')}`,
+            });
+        }
         return (0, class_transformer_1.plainToInstance)(task_response_dto_1.TaskResponseDto, updatedTask, {
             excludeExtraneousValues: true,
         });
@@ -152,6 +176,14 @@ let TasksService = class TasksService {
             this.prisma.attachment.deleteMany({ where: { taskId } }),
             this.prisma.task.delete({ where: { id: taskId } }),
         ]);
+        await this.activityLogger.log({
+            userId,
+            projectId,
+            entity: prisma_1.ActivityEntity.TASK,
+            entityId: taskId,
+            action: prisma_1.ActivityAction.DELETE,
+            description: `Задача «${task.title}» удалена`,
+        });
         return true;
     }
     async updateStatus(projectId, taskId, dto, userId) {
@@ -169,12 +201,21 @@ let TasksService = class TasksService {
             where: { id: taskId },
             data: { status: dto.status },
         });
+        await this.activityLogger.log({
+            userId,
+            projectId,
+            entity: prisma_1.ActivityEntity.TASK,
+            entityId: taskId,
+            action: prisma_1.ActivityAction.UPDATE,
+            description: `Статус задачи «${task.title}» изменен с ${task.status} на ${dto.status}`,
+        });
         return true;
     }
 };
 exports.TasksService = TasksService;
 exports.TasksService = TasksService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        activity_logger_service_1.ActivityLoggerService])
 ], TasksService);
 //# sourceMappingURL=tasks.service.js.map

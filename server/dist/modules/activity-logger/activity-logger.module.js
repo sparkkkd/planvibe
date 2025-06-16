@@ -6,19 +6,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TasksModule = void 0;
+exports.ActivityLoggerModule = void 0;
 const common_1 = require("@nestjs/common");
-const tasks_service_1 = require("./tasks.service");
-const tasks_controller_1 = require("./tasks.controller");
-const project_member_guard_1 = require("../../common/guards/project-member.guard");
-let TasksModule = class TasksModule {
+const activity_logger_service_1 = require("./activity-logger.service");
+const activity_service_1 = require("../activity/activity.service");
+let ActivityLoggerModule = class ActivityLoggerModule {
 };
-exports.TasksModule = TasksModule;
-exports.TasksModule = TasksModule = __decorate([
+exports.ActivityLoggerModule = ActivityLoggerModule;
+exports.ActivityLoggerModule = ActivityLoggerModule = __decorate([
+    (0, common_1.Global)(),
     (0, common_1.Module)({
-        imports: [],
-        controllers: [tasks_controller_1.TasksController],
-        providers: [tasks_service_1.TasksService, project_member_guard_1.ProjectMemberGuard],
+        controllers: [],
+        providers: [activity_logger_service_1.ActivityLoggerService, activity_service_1.ActivityService],
+        exports: [activity_logger_service_1.ActivityLoggerService],
     })
-], TasksModule);
-//# sourceMappingURL=tasks.module.js.map
+], ActivityLoggerModule);
+//# sourceMappingURL=activity-logger.module.js.map
