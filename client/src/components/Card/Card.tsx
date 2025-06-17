@@ -1,11 +1,11 @@
 import type { FC } from 'react'
-
-import styles from './Card.module.sass'
 import clsx from 'clsx'
 
-interface CardProps
-	extends React.HTMLAttributes<HTMLDivElement>,
-		React.PropsWithChildren {}
+import styles from './Card.module.sass'
+
+interface CardProps extends React.PropsWithChildren {
+	className?: string
+}
 
 export const Card: FC<CardProps> = ({ className, children, ...rest }) => {
 	return (

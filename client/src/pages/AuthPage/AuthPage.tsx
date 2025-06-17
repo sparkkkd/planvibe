@@ -21,6 +21,7 @@ import { Logo } from '../../components/Logo/Logo'
 import { AuthForm } from '../../modules/AuthForm/AuthForm'
 
 import styles from './AuthPage.module.sass'
+import { AnimatePresence, motion, type Variants } from 'framer-motion'
 
 interface AuthPageProps {
 	className?: string
@@ -103,17 +104,48 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 		setMode((prev) => (prev === 'login' ? 'register' : 'login'))
 	}
 
+	const containerVariants: Variants = {
+		initial: {
+			opacity: 0,
+			scale: 0.3,
+		},
+		animate: {
+			opacity: 1,
+			scale: 1,
+			transition: {
+				duration: 0.25,
+			},
+		},
+		exit: {
+			opacity: 0,
+			scale: 0.7,
+			transition: {
+				duration: 0.25,
+			},
+		},
+	}
+
 	return (
 		<div className={clsx(styles.wrapper, className)}>
-			<Card className={styles.card}>
-				<Logo className={styles.logo} />
-				<AuthForm
-					mode={mode}
-					onSubmit={handleSubmit}
-					switchMode={switchMode}
-					isLoading={mode === 'login' ? isLoginLoading : isRegisterLoading}
-				/>
-			</Card>
+			<AnimatePresence mode='wait'>
+				<motion.div
+					key={mode}
+					variants={containerVariants}
+					initial='initial'
+					animate='animate'
+					exit='exit'
+				>
+					<Card className={styles.card}>
+						<Logo className={styles.logo} />
+						<AuthForm
+							mode={mode}
+							onSubmit={handleSubmit}
+							switchMode={switchMode}
+							isLoading={mode === 'login' ? isLoginLoading : isRegisterLoading}
+						/>
+					</Card>
+				</motion.div>
+			</AnimatePresence>
 		</div>
 	)
 }
