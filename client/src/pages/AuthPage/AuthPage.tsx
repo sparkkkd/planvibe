@@ -62,7 +62,7 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 					})
 				)
 
-				navigate('/projects')
+				navigate('/')
 			} catch (error) {
 				console.error('Login error:', {
 					catchError: error,
