@@ -8,6 +8,10 @@ const swagger_util_1 = require("./swagger/swagger.util");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use(cookieParser());
+    app.enableCors({
+        origin: process.env.CLIENT_URL,
+        credentials: true,
+    });
     app.useGlobalPipes(new common_1.ValidationPipe({
         whitelist: true,
         forbidNonWhitelisted: true,

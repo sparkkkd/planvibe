@@ -13,13 +13,13 @@ export declare class ActivityLoggerService {
         action: ActivityAction;
         description: string;
     }): Promise<{
+        description: string;
         id: string;
         createdAt: Date;
+        userId: string;
+        projectId: string;
         entity: import("generated/prisma").$Enums.ActivityEntity;
         entityId: string;
         action: import("generated/prisma").$Enums.ActivityAction;
-        description: string;
-        projectId: string;
-        userId: string;
     }>;
 }

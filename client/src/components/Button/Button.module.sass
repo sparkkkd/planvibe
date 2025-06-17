@@ -1,0 +1,23 @@
+.button
+	padding: 10px 15px
+	position: relative
+	border-radius: 10px
+	background-color: #21569f
+	font-size: 16px
+	color: #fff
+	border: none
+	cursor: pointer
+	transition: background-color 0.3s
+
+.loader
+	position: absolute !important
+	left: 50%
+	top: 50%
+	transform: translate(-50%, -50%)
+
+@media( hover )
+	.button
+		&:hover
+			background-color: #296ac3
+		&:disabled
+			cursor: not-allowed

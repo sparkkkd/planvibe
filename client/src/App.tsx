@@ -1,11 +1,7 @@
-import styles from './App.module.sass'
+import { AppRouter } from './router/AppRouter'
 
 function App() {
-	return (
-		<main>
-			<h1 className={styles.title}>Planvibe</h1>
-		</main>
-	)
+	return <AppRouter />
 }
 
 export default App
