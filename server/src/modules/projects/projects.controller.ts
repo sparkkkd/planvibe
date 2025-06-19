@@ -8,6 +8,7 @@ import {
 	Param,
 	Patch,
 	Post,
+	Query,
 } from '@nestjs/common'
 import { ProjectsService } from './projects.service'
 import { Authorization } from '../auth/decorators/authorization.decorator'
@@ -22,6 +23,7 @@ import {
 	ApiTags,
 } from '@nestjs/swagger'
 import { ProjectResponseDto } from './dto/project-response.dto'
+import { GetProjectsDto } from './dto/get-projects.dto'
 
 @ApiTags('Проекты')
 @Authorization()
@@ -50,8 +52,11 @@ export class ProjectsController {
 	})
 	@ApiOkResponse({ type: ProjectResponseDto, isArray: true })
 	@HttpCode(HttpStatus.OK)
-	getProjectsForUser(@CurrentUser('id') userId: string) {
-		return this.projectsService.getProjectForUser(userId)
+	getProjectsForUser(
+		@CurrentUser('id') userId: string,
+		@Query() filters: GetProjectsDto
+	) {
+		return this.projectsService.getProjectsForUser(userId, filters)
 	}
 
 	@Get(':id')

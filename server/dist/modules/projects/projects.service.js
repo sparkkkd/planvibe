@@ -24,6 +24,39 @@ let ProjectsService = class ProjectsService {
             excludeExtraneousValues: true,
         });
     }
+    buildWhereCondition(userId, search) {
+        const condition = {
+            userId,
+        };
+        if (search) {
+            condition.project = {
+                OR: [
+                    {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive',
+                        },
+                    },
+                    {
+                        description: {
+                            contains: search,
+                            mode: 'insensitive',
+                        },
+                    },
+                ],
+            };
+        }
+        return condition;
+    }
+    buildOrderByCondition(sortBy) {
+        return sortBy
+            ? {
+                project: {
+                    createdAt: sortBy === 'newest' ? 'desc' : 'asc',
+                },
+            }
+            : undefined;
+    }
     async create(userId, dto) {
         const project = await this.prisma.project.create({
             data: {
@@ -57,14 +90,21 @@ let ProjectsService = class ProjectsService {
             throw new common_1.ForbiddenException('Вы не являетесь участником проекта');
         return this.toProjectResponseDto(project);
     }
-    async getProjectForUser(userId) {
+    async getProjectsForUser(userId, filters) {
+        const { search, sortBy } = filters || {};
+        const whereCondition = this.buildWhereCondition(userId, search);
+        const orderByCondition = this.buildOrderByCondition(sortBy);
         const projectMembers = await this.prisma.projectMember.findMany({
-            where: {
-                userId,
-            },
+            where: whereCondition,
             include: {
-                project: true,
+                project: {
+                    include: {
+                        members: true,
+                        tasks: true,
+                    },
+                },
             },
+            orderBy: orderByCondition,
         });
         return projectMembers.map((pm) => this.toProjectResponseDto(pm.project));
     }

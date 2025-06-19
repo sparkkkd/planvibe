@@ -105,7 +105,7 @@ let AuthService = class AuthService {
             httpOnly: true,
             domain: this.COOKIE_DOMAIN,
             secure: !(0, is_dev_util_1.isDev)(this.configService),
-            sameSite: (0, is_dev_util_1.isDev)(this.configService) ? 'none' : 'lax',
+            sameSite: (0, is_dev_util_1.isDev)(this.configService) ? 'lax' : 'none',
         });
     }
 };

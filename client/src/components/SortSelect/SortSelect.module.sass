@@ -1,0 +1,41 @@
+.wrapper
+	position: relative
+	display: flex
+	flex-direction: column
+
+.button
+	display: flex
+	align-items: center
+	font-size: 20px
+	cursor: pointer
+	transition: color .3s
+
+.buttonActive
+	color: #296ac3
+
+.menu
+	width: 100%
+	position: absolute
+	left: 6px
+	top: 100%
+	border-radius: 10px
+
+.list
+	padding: 10px
+	display: flex
+	flex-direction: column
+	gap: 5px
+	color: #fff
+	border-radius: 10px
+
+.item
+	font-size: 16px
+	cursor: pointer
+	transition: color .3s
+
+@media (hover: hover)
+	.button:hover
+		color: #296ac3
+
+	.item:hover
+		color: #296ac3

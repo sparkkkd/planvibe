@@ -17,6 +17,8 @@ class ProjectResponseDto {
     name;
     description;
     ownerId;
+    members;
+    tasks;
     createdAt;
     updatedAt;
 }
@@ -45,6 +47,16 @@ __decorate([
     (0, class_transformer_1.Expose)(),
     __metadata("design:type", String)
 ], ProjectResponseDto.prototype, "ownerId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Участники проекта' }),
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Array)
+], ProjectResponseDto.prototype, "members", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Задачи проекта' }),
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Array)
+], ProjectResponseDto.prototype, "tasks", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Дата создания проекта',

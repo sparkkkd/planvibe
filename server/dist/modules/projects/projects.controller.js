@@ -20,6 +20,7 @@ const current_user_decorator_1 = require("../auth/decorators/current-user.decora
 const create_project_dto_1 = require("./dto/create-project.dto");
 const swagger_1 = require("@nestjs/swagger");
 const project_response_dto_1 = require("./dto/project-response.dto");
+const get_projects_dto_1 = require("./dto/get-projects.dto");
 let ProjectsController = class ProjectsController {
     projectsService;
     constructor(projectsService) {
@@ -28,8 +29,8 @@ let ProjectsController = class ProjectsController {
     createProject(userId, dto) {
         return this.projectsService.create(userId, dto);
     }
-    getProjectsForUser(userId) {
-        return this.projectsService.getProjectForUser(userId);
+    getProjectsForUser(userId, filters) {
+        return this.projectsService.getProjectsForUser(userId, filters);
     }
     getProjectById(id, userId) {
         return this.projectsService.getProjectById(id, userId);
@@ -65,8 +66,9 @@ __decorate([
     (0, swagger_1.ApiOkResponse)({ type: project_response_dto_1.ProjectResponseDto, isArray: true }),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, get_projects_dto_1.GetProjectsDto]),
     __metadata("design:returntype", void 0)
 ], ProjectsController.prototype, "getProjectsForUser", null);
 __decorate([

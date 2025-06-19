@@ -5,9 +5,28 @@ import { ProjectsPage } from '../pages/ProjectsPage/ProjectsPage'
 import { useAppSelector } from '../store/hooks'
 import { PrivateRoute } from './PrivateRoute'
 import { IntroPage } from '../pages/IntroPage/IntroPage'
+import { Loader } from '../components/Loader/Loader'
 
 export const AppRouter: React.FC = () => {
-	const { isAuthenticated } = useAppSelector((state) => state.authSlice)
+	const { isAuthenticated, isLoading } = useAppSelector(
+		(state) => state.authSlice
+	)
+
+	if (isLoading) {
+		return (
+			<div
+				style={{
+					width: '100%',
+					height: '100vh',
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+				}}
+			>
+				<Loader />
+			</div>
+		)
+	}
 
 	return (
 		<Routes>

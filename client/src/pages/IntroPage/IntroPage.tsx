@@ -20,9 +20,9 @@ export const IntroPage: FC<IntroPageProps> = ({ className }) => {
 
 	return (
 		<div className={styles.wrapper}>
+			<Header />
 			<Container>
 				<main className={clsx(styles.main, className)}>
-					<Header />
 					<h1 className={styles.title}>
 						Управляй проектами с умом <br />
 						<span className={styles.titleDark}>

@@ -38,8 +38,18 @@ export const authApi = createApi({
 			}),
 		}),
 
+		refresh: builder.mutation<IAuthResponse, void>({
+			query: () => ({
+				url: '/auth/refresh',
+				method: 'POST',
+			}),
+		}),
+
 		fetchMe: builder.query<IUser, void>({
-			query: () => '/auth/@me',
+			query: () => ({
+				url: '/auth/@me',
+				method: 'GET',
+			}),
 		}),
 		logout: builder.mutation<void, void>({
 			query: () => ({
@@ -55,4 +65,6 @@ export const {
 	useFetchMeQuery,
 	useLogoutMutation,
 	useRegisterMutation,
+	useLazyFetchMeQuery,
+	useRefreshMutation,
 } = authApi

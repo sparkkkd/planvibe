@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Expose, Transform } from 'class-transformer'
+import { ProjectMember, Task } from 'generated/prisma'
 
 export class ProjectResponseDto {
 	@ApiProperty({ description: 'Идентификатор проекта', example: 1 })
@@ -21,6 +22,14 @@ export class ProjectResponseDto {
 	@ApiProperty({ description: 'Идентификатор владельца проекта', example: 1 })
 	@Expose()
 	ownerId: string
+
+	@ApiProperty({ description: 'Участники проекта' })
+	@Expose()
+	members: ProjectMember[]
+
+	@ApiProperty({ description: 'Задачи проекта' })
+	@Expose()
+	tasks: Task[]
 
 	@ApiProperty({
 		description: 'Дата создания проекта',

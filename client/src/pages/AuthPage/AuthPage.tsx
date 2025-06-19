@@ -22,6 +22,7 @@ import { AuthForm } from '../../modules/AuthForm/AuthForm'
 
 import styles from './AuthPage.module.sass'
 import { AnimatePresence, motion, type Variants } from 'framer-motion'
+import { getRedirectPathAfterLogin } from '../../utils/navigation'
 
 interface AuthPageProps {
 	className?: string
@@ -62,7 +63,8 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 					})
 				)
 
-				navigate('/')
+				const redirectPath = getRedirectPathAfterLogin()
+				navigate(redirectPath)
 			} catch (error) {
 				console.error('Login error:', {
 					catchError: error,

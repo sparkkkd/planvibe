@@ -7,8 +7,8 @@ export declare class ActivityService {
         description: string;
         id: string;
         createdAt: Date;
-        userId: string;
         projectId: string;
+        userId: string;
         entity: import("generated/prisma").$Enums.ActivityEntity;
         entityId: string;
         action: import("generated/prisma").$Enums.ActivityAction;

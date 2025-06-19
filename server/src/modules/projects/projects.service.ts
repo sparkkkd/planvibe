@@ -9,6 +9,8 @@ import { Project } from 'generated/prisma'
 import { ProjectResponseDto } from './dto/project-response.dto'
 import { plainToInstance } from 'class-transformer'
 import { UpdateProjectDto } from './dto/update-project.dto'
+import { GetProjectsDto } from './dto/get-projects.dto'
+import { SortOrder } from '../../common/types/sort-order.type'
 
 @Injectable()
 export class ProjectsService {
@@ -18,6 +20,45 @@ export class ProjectsService {
 		return plainToInstance(ProjectResponseDto, project, {
 			excludeExtraneousValues: true,
 		})
+	}
+
+	private buildWhereCondition(userId: string, search?: string) {
+		const condition: any = {
+			userId,
+		}
+
+		if (search) {
+			condition.project = {
+				OR: [
+					{
+						name: {
+							contains: search,
+							mode: 'insensitive',
+						},
+					},
+					{
+						description: {
+							contains: search,
+							mode: 'insensitive',
+						},
+					},
+				],
+			}
+		}
+
+		return condition
+	}
+
+	private buildOrderByCondition(
+		sortBy?: 'newest' | 'oldest'
+	): { project: { createdAt: SortOrder } } | undefined {
+		return sortBy
+			? {
+					project: {
+						createdAt: sortBy === 'newest' ? 'desc' : 'asc',
+					},
+				}
+			: undefined
 	}
 
 	async create(
@@ -64,14 +105,26 @@ export class ProjectsService {
 		return this.toProjectResponseDto(project)
 	}
 
-	async getProjectForUser(userId: string) {
+	async getProjectsForUser(
+		userId: string,
+		filters?: GetProjectsDto
+	): Promise<ProjectResponseDto[]> {
+		const { search, sortBy } = filters || {}
+
+		const whereCondition = this.buildWhereCondition(userId, search)
+		const orderByCondition = this.buildOrderByCondition(sortBy)
+
 		const projectMembers = await this.prisma.projectMember.findMany({
-			where: {
-				userId,
-			},
+			where: whereCondition,
 			include: {
-				project: true,
+				project: {
+					include: {
+						members: true,
+						tasks: true,
+					},
+				},
 			},
+			orderBy: orderByCondition,
 		})
 
 		return projectMembers.map((pm) => this.toProjectResponseDto(pm.project))
